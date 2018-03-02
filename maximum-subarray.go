@@ -3,9 +3,35 @@ package main
 import "fmt"
 
 func main(){
-	nums:=[]int{-3,-2,17,-16,1,-7}
-	a:=maxSubArray(nums)
+	nums:=[]int{-2,-1}
+	a:=max(nums)
 	fmt.Println(a)
+}
+
+func max(nums []int) int {
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	sum := nums[0]
+	maxnum:=sum
+	for i := 0; i < len(nums); i++ {
+		if maxnum<0{
+			maxnum=nums[i]
+		}else {
+			maxnum+=nums[i]
+		}
+		if maxnum<sum{
+			maxnum=sum
+		}
+/*		sum = sum + nums[i]
+		if maxnum < sum {
+			maxnum = sum
+		}
+		if sum < 0 {
+			sum = 0
+		}*/
+	}
+	return maxnum
 }
 
 func maxSubArray(nums []int) int {

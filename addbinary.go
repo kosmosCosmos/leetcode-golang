@@ -7,36 +7,60 @@ import (
 )
 
 func main(){
-	a:=binary("10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101","110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011")
-	fmt.Println(a)
+	a:="11101"
+	b:="110"
+	c:=addBinary(a,b)
+	fmt.Println(c)
+
 }
 
-func binary(a,b string)string{
-	num1,_:=strconv.Atoi(a)
-	num2,_:=strconv.Atoi(b)
-	res:=num1+num2
-	fmt.Println(res)
-	var result string
-	str:=strconv.Itoa(res)
-	array:=strings.Split(str,"")
-	intarray:=make([]int,0)
-	for _,x:=range array{
-		xint,_:=strconv.Atoi(x)
-		intarray=append(intarray,xint)
+func addBinary(a string, b string) string {
+	if len(a) < len(b) {
+		a, b = b, a
 	}
-	for i:=len(intarray)-1;i>0;i--{
-		if intarray[i]>1{
-			intarray[i]=intarray[i]-2
-			intarray[i-1]++
-		}
+	l := len(a)
 
+	isA := trans(a, l)
+	isB := trans(b, l)
+
+	return makeString(add(isA, isB))
+}
+
+func trans(s string, l int) []int {
+	res := make([]int, l)
+	ls := len(s)
+	for i, b := range s {
+		res[l-ls+i] = int(b - '0')
 	}
-	if intarray[0]>1{
-		intarray[0]=intarray[0]-2
-		intarray=append([]int{1},intarray...)
+
+	return res
+}
+
+func add(a, b []int) []int {
+	l := len(a) + 1
+	res := make([]int, l)
+	for i := l - 1; i >= 1; i-- {
+		temp := res[i]+a[i-1] + b[i-1]
+		res[i] = temp % 2
+		res[i-1] = temp / 2
 	}
-	for _,y:=range intarray{
-		result=result+strconv.Itoa(y)
+
+	i := 0
+	// i < l-1 而不是 < l 的原因是
+	// "" + "" == "0"
+	// 需要保留最后一个 '0'
+	for i < l-1 && res[i] == 0 {
+		i++
 	}
-	return result
+
+	return res[i:]
+}
+
+func makeString(nums []int) string {
+	bytes := make([]byte, len(nums))
+	for i := range bytes {
+		bytes[i] = byte(nums[i]) + '0'
+	}
+
+	return string(bytes)
 }
