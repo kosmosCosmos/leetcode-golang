@@ -10,11 +10,7 @@ func main(){
 func singleNumber(nums []int) int {
 	res := 0
 	for _, n := range nums {
-		// n^n == 0
-		// a^b^a^b^a == a
-		fmt.Println(res,n)
 		res ^= n
-		fmt.Println(res)
 	}
 	return res
 }
